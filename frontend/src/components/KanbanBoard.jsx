@@ -1,9 +1,20 @@
 import Column from "./Column";
 import TaskCard from "./TaskCard";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-
+import { useState } from "react";
+import TaskModal from "./TaskModal";
 export default function KanbanBoard({ tasks, socket }) {
   const taskList = Object.values(tasks);
+
+  const [editingTask, setEditingTask] = useState(null);
+
+  const saveEdits = updates => {
+    socket.emit("task:update", {
+      taskId: editingTask.id,
+      updates
+    });
+    setEditingTask(null);
+  };
 
   const onDragEnd = result => {
     const { destination, draggableId } = result;
@@ -16,6 +27,14 @@ export default function KanbanBoard({ tasks, socket }) {
   };
 
   return (
+    <>
+    {editingTask && (
+      <TaskModal
+        task={editingTask}
+        onClose={() => setEditingTask(null)}
+        onSave={saveEdits}
+      />
+    )}
     <DragDropContext onDragEnd={onDragEnd}>
       <div style={{ display: "flex", gap: "16px" }}>
 
@@ -38,7 +57,7 @@ export default function KanbanBoard({ tasks, socket }) {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <TaskCard task={task} />
+                          <TaskCard task={task} onEdit={() => setEditingTask(task)} />
                         </div>
                       )}
                     </Draggable>
@@ -68,7 +87,7 @@ export default function KanbanBoard({ tasks, socket }) {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <TaskCard task={task} />
+                          <TaskCard task={task} onEdit={() => setEditingTask(task)}/>
                         </div>
                       )}
                     </Draggable>
@@ -98,7 +117,7 @@ export default function KanbanBoard({ tasks, socket }) {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <TaskCard task={task} />
+                          <TaskCard task={task} onEdit={() => setEditingTask(task)} />
                         </div>
                       )}
                     </Draggable>
@@ -111,5 +130,6 @@ export default function KanbanBoard({ tasks, socket }) {
 
       </div>
     </DragDropContext>
+    </>
   );
 }

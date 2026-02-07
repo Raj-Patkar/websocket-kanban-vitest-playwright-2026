@@ -21,6 +21,12 @@ io.on("connection", (socket) => {
     console.log("User disconnected");
   });
 
+
+  socket.on("task:update", ({ taskId, updates }) => {
+    if (!tasks[taskId]) return;
+    tasks[taskId] = { ...tasks[taskId], ...updates };
+    io.emit("sync:tasks", tasks);
+  });
   socket.on("task:move", ({ taskId, newStatus }) => {
     if (tasks[taskId]) {
       tasks[taskId].status = newStatus;
