@@ -5,6 +5,7 @@ export default function TaskModal({ task, onClose, onSave }) {
     const [description, setDescription] = useState(task.description || "");
     const [priority, setPriority] = useState(task.priority || "Low");
     const [category, setCategory] = useState(task.category || "Feature");
+    const [attachment, setAttachment] = useState(null);
     return (
         <div style={overlay}>
             <div style={modal}>
@@ -42,21 +43,49 @@ export default function TaskModal({ task, onClose, onSave }) {
                     <option value="Enhancement">Enhancement</option>
                 </select>
 
+                <label>Attachment</label>
+
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={e => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+
+                        const url = URL.createObjectURL(file);
+                        setAttachment(url);
+                    }}
+                />
+
+                {/* IMAGE PREVIEW */}
+                {attachment && (
+                    <div style={{ marginTop: "8px" }}>
+                        <img
+                            src={attachment}
+                            alt="preview"
+                            style={{ width: "100px", borderRadius: "4px" }}
+                        />
+                    </div>
+                )}
+
                 <button
                     onClick={() =>
                         onSave({
                             title,
                             description,
                             priority,
-                            category
+                            category,
+                            attachments: attachment
+                                ? [...(task.attachments || []), attachment]
+                                : task.attachments || []
                         })
                     }
                 >
-                    Save
-                </button>
-                <button onClick={onClose}>Cancel</button>
-            </div>
+                Save
+            </button>
+            <button onClick={onClose}>Cancel</button>
         </div>
+        </div >
     );
 }
 
