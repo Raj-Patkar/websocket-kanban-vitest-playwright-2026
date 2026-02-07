@@ -20,6 +20,13 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("User disconnected");
   });
+
+  socket.on("task:move", ({ taskId, newStatus }) => {
+    if (tasks[taskId]) {
+      tasks[taskId].status = newStatus;
+      io.emit("sync:tasks", tasks);
+    }
+  });
 });
 
 server.listen(5000, () => console.log("Server running on port 5000"));
