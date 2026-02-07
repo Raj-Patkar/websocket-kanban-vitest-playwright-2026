@@ -1,15 +1,15 @@
 import { useState } from "react";
 
-export default function TaskModal({ task, onClose, onSave }) {
+export default function TaskModal({ task, onClose, onSave, mode = "edit" }) {
     const [title, setTitle] = useState(task.title || "");
     const [description, setDescription] = useState(task.description || "");
     const [priority, setPriority] = useState(task.priority || "Low");
     const [category, setCategory] = useState(task.category || "Feature");
-    const [attachment, setAttachment] = useState(null);
+    const [attachment, setAttachment] = useState(task.attachments?.[0] || null);
     return (
         <div style={overlay}>
             <div style={modal}>
-                <h3>Edit Task</h3>
+                <h3>{mode === "create" ? "Add Task" : "Edit Task"}</h3>
 
                 <input
                     value={title}
@@ -45,17 +45,33 @@ export default function TaskModal({ task, onClose, onSave }) {
 
                 <label>Attachment</label>
 
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={e => {
-                        const file = e.target.files[0];
-                        if (!file) return;
-
-                        const url = URL.createObjectURL(file);
-                        setAttachment(url);
+                <label
+                    style={{
+                        display: "inline-block",
+                        padding: "6px 10px",
+                        background: "#eee",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        marginTop: "4px"
                     }}
-                />
+                >
+                     Choose File
+                    <input
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        onChange={e => {
+                            const file = e.target.files[0];
+                            if (!file) return;
+
+                            const reader = new FileReader();
+                            reader.onload = () => {
+                                setAttachment(reader.result);
+                            };
+                            reader.readAsDataURL(file);
+                        }}
+                    />
+                </label>
 
                 {/* IMAGE PREVIEW */}
                 {attachment && (
@@ -76,15 +92,15 @@ export default function TaskModal({ task, onClose, onSave }) {
                             priority,
                             category,
                             attachments: attachment
-                                ? [...(task.attachments || []), attachment]
+                                ? [attachment]     // replace on edit
                                 : task.attachments || []
                         })
                     }
                 >
-                Save
-            </button>
-            <button onClick={onClose}>Cancel</button>
-        </div>
+                    {mode === "create" ? "Add" : "Save"}
+                </button>
+                <button onClick={onClose}>Cancel</button>
+            </div>
         </div >
     );
 }

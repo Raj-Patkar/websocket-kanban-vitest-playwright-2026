@@ -17,22 +17,6 @@ function App() {
   }, []);
   return (
     <div style={{ padding: "20px" }}>
-      <button
-        onClick={() => {
-          console.log("EMITTING TASK CREATE");
-          socket.emit("task:create", {
-            id: Date.now().toString(),
-            title: "Test Task",
-            status: "todo",
-            priority: "Low",
-            category: "Feature",
-            attachments: []
-          });
-        }}
-      >
-        Add Task
-      </button>
-
       <KanbanBoard tasks={tasks} socket={socket}/>
     </div>
   );
