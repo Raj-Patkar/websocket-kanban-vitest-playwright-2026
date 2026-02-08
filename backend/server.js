@@ -41,6 +41,10 @@ io.on("connection", (socket) => {
       io.emit("sync:tasks", tasks);
     }
   });
+  socket.on("task:delete", ({ taskId }) => {
+    delete tasks[taskId];       
+    io.emit("sync:tasks", tasks); 
+  });
 });
 
 server.listen(5000, () => console.log("Server running on port 5000"));

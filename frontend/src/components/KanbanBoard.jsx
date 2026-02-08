@@ -4,9 +4,9 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useState } from "react";
 import TaskModal from "./TaskModal";
 import "../kanban.css";
-
+import TaskProgressCharts from "./TaskProgressCharts";
 export default function KanbanBoard({ tasks, socket }) {
-  /* ✅ FIX: column-local ordered lists */
+
   const tasksByStatus = {
     todo: [],
     inprogress: [],
@@ -36,6 +36,11 @@ export default function KanbanBoard({ tasks, socket }) {
     setEditingTask(null);
   };
 
+  const deleteTask = taskId => {
+    socket.emit("task:delete", { taskId });
+    setEditingTask(null);
+  };
+
   const onDragEnd = result => {
     const { destination, draggableId } = result;
     if (!destination) return;
@@ -45,6 +50,12 @@ export default function KanbanBoard({ tasks, socket }) {
       newStatus: destination.droppableId,
       newOrder: destination.index
     });
+  };
+
+  const chartColumns = {
+    Todo: tasksByStatus.todo,
+    "In Progress": tasksByStatus.inprogress,
+    Done: tasksByStatus.done
   };
 
   return (
@@ -60,12 +71,16 @@ export default function KanbanBoard({ tasks, socket }) {
         </button>
       </div>
 
+      <p className="kanban-hint">
+        Click on any task card to edit or delete it
+      </p>
       {/* Modals */}
       {editingTask && (
         <TaskModal
           task={editingTask}
           onClose={() => setEditingTask(null)}
           onSave={saveEdits}
+          onDelete={deleteTask}
         />
       )}
 
@@ -92,111 +107,116 @@ export default function KanbanBoard({ tasks, socket }) {
 
       {/* Board */}
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="kanban-board">
-          {/* TODO */}
-          <Column title="To Do">
-            <Droppable droppableId="todo">
-              {provided => (
-                <div ref={provided.innerRef} {...provided.droppableProps} className="kanban-droppable">
-                  {tasksByStatus.todo.map((task, index) => (
-                    <Draggable
-                      key={task.id}
-                      draggableId={task.id}
-                      index={index}
-                    >
-                      {provided => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={{
-                            ...provided.draggableProps.style,
-                            marginBottom: "12px"
-                          }}
-                        >
-                          <TaskCard
-                            task={task}
-                            onEdit={() => setEditingTask(task)}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </Column>
+        <div className="kanban-board-wrapper">
+          <div className="kanban-board">
+            {/* TODO */}
+            <Column title="To Do">
+              <Droppable droppableId="todo">
+                {provided => (
+                  <div ref={provided.innerRef} {...provided.droppableProps} className="kanban-droppable">
+                    {tasksByStatus.todo.map((task, index) => (
+                      <Draggable
+                        key={task.id}
+                        draggableId={task.id}
+                        index={index}
+                      >
+                        {provided => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={{
+                              ...provided.draggableProps.style,
+                              marginBottom: "12px"
+                            }}
+                          >
+                            <TaskCard
+                              task={task}
+                              onEdit={() => setEditingTask(task)}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </Column>
 
-          {/* IN PROGRESS */}
-          <Column title="In Progress">
-            <Droppable droppableId="inprogress">
-              {provided => (
-                <div ref={provided.innerRef} {...provided.droppableProps} className="kanban-droppable">
-                  {tasksByStatus.inprogress.map((task, index) => (
-                    <Draggable
-                      key={task.id}
-                      draggableId={task.id}
-                      index={index}
-                    >
-                      {provided => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={{
-                            ...provided.draggableProps.style,
-                            marginBottom: "12px"
-                          }}
-                        >
-                          <TaskCard
-                            task={task}
-                            onEdit={() => setEditingTask(task)}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </Column>
+            {/* IN PROGRESS */}
+            <Column title="In Progress">
+              <Droppable droppableId="inprogress">
+                {provided => (
+                  <div ref={provided.innerRef} {...provided.droppableProps} className="kanban-droppable">
+                    {tasksByStatus.inprogress.map((task, index) => (
+                      <Draggable
+                        key={task.id}
+                        draggableId={task.id}
+                        index={index}
+                      >
+                        {provided => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={{
+                              ...provided.draggableProps.style,
+                              marginBottom: "12px"
+                            }}
+                          >
+                            <TaskCard
+                              task={task}
+                              onEdit={() => setEditingTask(task)}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </Column>
 
-          {/* DONE */}
-          <Column title="Done">
-            <Droppable droppableId="done">
-              {provided => (
-                <div ref={provided.innerRef} {...provided.droppableProps} className="kanban-droppable">
-                  {tasksByStatus.done.map((task, index) => (
-                    <Draggable
-                      key={task.id}
-                      draggableId={task.id}
-                      index={index}
-                    >
-                      {provided => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={{
-                            ...provided.draggableProps.style,
-                            marginBottom: "12px"
-                          }}
-                        >
-                          <TaskCard
-                            task={task}
-                            onEdit={() => setEditingTask(task)}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </Column>
+            {/* DONE */}
+            <Column title="Done">
+              <Droppable droppableId="done">
+                {provided => (
+                  <div ref={provided.innerRef} {...provided.droppableProps} className="kanban-droppable">
+                    {tasksByStatus.done.map((task, index) => (
+                      <Draggable
+                        key={task.id}
+                        draggableId={task.id}
+                        index={index}
+                      >
+                        {provided => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={{
+                              ...provided.draggableProps.style,
+                              marginBottom: "12px"
+                            }}
+                          >
+                            <TaskCard
+                              task={task}
+                              onEdit={() => setEditingTask(task)}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </Column>
+          </div>
+          <div className="kanban-analytics">
+            <TaskProgressCharts columns={chartColumns} />
+          </div>
         </div>
       </DragDropContext>
     </div>

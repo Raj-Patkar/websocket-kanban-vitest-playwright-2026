@@ -9,7 +9,7 @@ body {
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   color: #111827;
-  background: #f9fafb;
+  background: #F9F8F6;
 }   
 /* ===== Column ===== */
 
@@ -18,7 +18,7 @@ body {
   min-width: 340px;
   max-width: 420px;
 
-  background: #f3f4f6;
+  background: #EEEEEE;
   padding: 14px;
   border-radius: 14px;
 
@@ -38,7 +38,7 @@ body {
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 14px;
+  padding: 20px;
   cursor: pointer;
   transition: box-shadow 0.2s ease, transform 0.1s ease;
   will-change: transform;
@@ -49,7 +49,7 @@ body {
 }
 
 .task-title {
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 600;
   color: #1f2937;
   margin: 0;
@@ -57,7 +57,7 @@ body {
 
 .task-description {
   margin-top: 6px;
-  font-size: 13px;
+  font-size: 14px;
   color: #4b5563;
   line-height: 1.4;
 }
@@ -71,7 +71,7 @@ body {
 
 /* Priority badges */
 .task-priority {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   padding: 3px 8px;
   border-radius: 999px;
@@ -94,7 +94,7 @@ body {
 
 /* Category */
 .task-category {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   padding: 3px 8px;
   border-radius: 999px;
@@ -105,7 +105,8 @@ body {
 /* Attachment */
 .task-attachment {
   position: relative;
-  height: 120px;
+  height: 180px;
+  margin-top: 9px
 }
 
 .task-attachment img {
@@ -129,7 +130,7 @@ body {
 /* Modal Card */
 .task-modal {
   background: #ffffff;
-  width: 300px;
+  width: 400px;
   margin: 10% auto;
   padding: 16px;
   border-radius: 12px;
@@ -212,24 +213,24 @@ body {
 }
 
 .btn-primary {
-  background: #2563eb;
+  background: #10db53;
   color: white;
   border: none;
   border-radius: 6px;
   padding: 6px 12px;
-  font-size: 13px;
+  font-size: 15px;
   cursor: pointer;
 }
 
 .btn-primary:hover {
-  background: #1d4ed8;
+  background: #0ba43e;
 }
 
 .btn-secondary {
   background: transparent;
   border: none;
   color: #374151;
-  font-size: 13px;
+  font-size: 15px;
   cursor: pointer;
 }
 
@@ -240,7 +241,7 @@ body {
 /* Page */
 .kanban-page {
   min-height: 100vh;
-  background: #f9fafb;
+  background: #F9F8F6;
   padding: 24px;
   box-sizing: border-box;
 }
@@ -255,26 +256,46 @@ body {
 
 .kanban-title {
   margin: 0;
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 600;
   color: #1f2937;
 }
 
 .kanban-add-btn {
-  background: #2563eb;
+  background: #f44d4d;
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 8px 14px;
-  font-size: 14px;
+  padding: 15px 20px;
+  font-size: 17px;
   font-weight: 600;
   cursor: pointer;
 }
 
 .kanban-add-btn:hover {
-  background: #1d4ed8;
+  background: #cb0e0e;
 }
 
+.kanban-hint {
+  margin-top: -12px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
 /* Board */
 
 .kanban-board {
@@ -292,4 +313,182 @@ body {
   min-height: 120px;        /* ensures drop target exists */
   display: flex;
   flex-direction: column;
+}
+
+
+.kanban-board-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding-right: 12px;
+}
+
+/* Main board stays clean */
+.kanban-board {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+}
+
+/* Analytics panel */
+.kanban-analytics {
+  width: 320px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 20px;
+
+  /* Visual polish */
+  background: #EEEEEE;
+  border-radius: 14px;
+  padding: 16px 14px;
+
+  .kanban-analytics {
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.kanban-analytics:hover {
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.08),
+    0 6px 14px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+}
+
+
+/* =====================================
+   LARGE TABLETS & SMALL LAPTOPS
+   (≤ 1200px)
+===================================== */
+
+@media (max-width: 1200px) {
+  .kanban-column {
+    min-width: 300px;
+    max-width: 360px;
+  }
+
+  .kanban-analytics {
+    width: 280px;
+  }
+
+  .kanban-title {
+    font-size: 26px;
+  }
+
+  .kanban-add-btn {
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+}
+
+/* =====================================
+   TABLETS
+   (≤ 992px)
+===================================== */
+
+@media (max-width: 992px) {
+  .kanban-board-wrapper {
+    flex-direction: column;
+  }
+
+  .kanban-analytics {
+    width: 100%;
+    position: relative;
+    top: 0;
+    margin-top: 20px;
+  }
+
+  .kanban-board {
+    gap: 14px;
+  }
+
+  .kanban-column {
+    min-width: 280px;
+    max-width: 100%;
+  }
+}
+
+/* =====================================
+   MOBILE DEVICES
+   (≤ 768px)
+===================================== */
+
+@media (max-width: 768px) {
+  .kanban-page {
+    padding: 16px;
+  }
+
+  .kanban-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .kanban-title {
+    font-size: 22px;
+  }
+
+  .kanban-add-btn {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+  }
+
+  .kanban-board {
+    gap: 12px;
+  }
+
+  .kanban-column {
+    min-width: 260px;
+  }
+
+  .task-card {
+    padding: 16px;
+  }
+
+  .task-title {
+    font-size: 16px;
+  }
+
+  .task-description {
+    font-size: 13px;
+  }
+}
+
+/* =====================================
+   SMALL PHONES
+   (≤ 480px)
+===================================== */
+
+@media (max-width: 480px) {
+  .kanban-title {
+    font-size: 20px;
+  }
+
+  .kanban-hint {
+    font-size: 12px;
+  }
+
+  .kanban-column {
+    min-width: 240px;
+    padding: 12px;
+  }
+
+  .task-card {
+    padding: 14px;
+  }
+
+  .task-meta {
+    gap: 4px;
+  }
+
+  .task-priority,
+  .task-category {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .task-modal {
+    width: 92%;
+    margin: 20% auto;
+  }
 }

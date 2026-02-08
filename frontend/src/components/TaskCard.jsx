@@ -1,4 +1,10 @@
 export default function TaskCard({ task, onEdit }) {
+
+  const PRIORITY_TEXT = {
+    Low: "Low Priority",
+    Medium: "Medium Priority",
+    High: "High Priority"
+  };
   return (
     <div className="task-card" onClick={() => onEdit(task)}>
       {/* Title */}
@@ -13,25 +19,26 @@ export default function TaskCard({ task, onEdit }) {
 
       {/* Meta Info */}
       <div className="task-meta">
-        <span
-          className={`task-priority ${
-            task.priority === "High"
-              ? "priority-high"
-              : task.priority === "Medium"
-              ? "priority-medium"
-              : "priority-low"
-          }`}
-        >
-          {task.priority}
+        <span className={`task-priority priority-${task.priority.toLowerCase()}`}>
+          {PRIORITY_TEXT[task.priority]}
         </span>
 
         <span className="task-category">{task.category}</span>
       </div>
 
       {/* Attachment Preview */}
-      {task.attachments && task.attachments.length > 0 && (
+      {task.attachments?.[0] && (
         <div className="task-attachment">
-          <img src={task.attachments[0]} alt="attachment" />
+          {task.attachments[0].type === "application/pdf" ? (
+            <div style={{ padding: "8px", fontSize: "13px" }}>
+              📄 {task.attachments[0].name}
+            </div>
+          ) : (
+            <img
+              src={task.attachments[0].data}
+              alt={task.attachments[0].name}
+            />
+          )}
         </div>
       )}
     </div>

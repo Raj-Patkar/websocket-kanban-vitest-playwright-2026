@@ -10,6 +10,7 @@ function App() {
     socket.on("sync:tasks", updatedTasks => {
       setTasks(updatedTasks);
     });
+    
 
     return () => {
       socket.off("sync:tasks");
