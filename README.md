@@ -5,6 +5,26 @@ The implementation focuses on **real-time collaboration**, **predictable UI beha
 
 ---
 
+## link
+
+### Backend (WebSocket Server)
+🔗 https://kanban-board-assignment-55ov.onrender.com/
+
+⚠️ **Important Note:**  
+Visiting the backend URL directly in a browser may show **“Cannot GET /”**.  
+This is **expected behavior** as there is no html route.
+
+### Frontend (UI)
+
+turn on backend instances before frontend
+🔗 https://kanban-board-app-0n7x.onrender.com
+
+- This is the main user-facing application
+- Open this link to use the Kanban board
+- Supports real-time collaboration across multiple browsers
+
+
+
 ## Overview
 
 This project allows multiple users to collaborate on a Kanban board in real time.  
