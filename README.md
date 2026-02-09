@@ -1,7 +1,7 @@
 # WebSocket-Powered Kanban Board
 
 A real-time Kanban board built with **React** and **WebSockets** as part of a take-home assignment.  
-The implementation focuses on **real-time collaboration**, **predictable UI behavior**, and **practical engineering trade-offs** rather than unnecessary infrastructure.
+The implementation focuses on **real-time collaboration**, **predictable UI behavior**, and **practical engineering trade-offs**.
 
 ---
 
@@ -35,12 +35,11 @@ The solution prioritizes:
 MongoDB was intentionally **not used**.
 
 **Reasoning:**
-- The assignment allows in-memory storage
 - The primary evaluation focus is **WebSocket-based real-time synchronization**
 - Adding MongoDB would increase complexity without improving real-time behavior
 - In-memory state simplifies reasoning about broadcasts and client consistency
 
-The backend maintains task state in memory and broadcasts updates via WebSockets, which is sufficient for the scope of this assignment.
+The backend maintains task state in memory and broadcasts updates via WebSockets.
 
 ---
 
@@ -52,8 +51,6 @@ Attachments are stored and transmitted as **Base64 data**, not external URLs.
 - Ensures instant synchronization across all connected browsers
 - Avoids dependency on external file servers or cloud storage
 - Prevents broken or inaccessible URLs across different clients
-- Works reliably with WebSocket-based state broadcasting
-- Simplifies setup while preserving correct multi-client behavior
 
 **Trade-off acknowledged:**
 - Base64 increases payload size  
@@ -65,9 +62,6 @@ This choice prioritizes **correctness and consistency across browsers** over sto
 
 ## Testing Strategy
 
-The project follows a **testing pyramid approach**, not exhaustive end-to-end coverage.
-
-**Rationale:**
 - Unit tests validate UI logic and component behavior
 - Integration tests verify WebSocket-driven real-time synchronization
 - End-to-end tests cover only critical user journeys
@@ -102,7 +96,11 @@ This keeps tests fast, reliable, and maintainable while providing high confidenc
 ```bash
 cd backend
 npm install
-nodemon server.js
+npm run dev
+```
+### Frontend
+```bash
 cd frontend
 npm install
 npm run dev
+```
