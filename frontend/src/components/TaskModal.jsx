@@ -122,6 +122,7 @@ export default function TaskModal({ task, onClose, onSave, onDelete, mode = "edi
                     {mode !== "create" && (
                         <button
                             className="btn-danger"
+                            data-testid="delete-task"
                             onClick={() => onDelete?.(task.id)}
                         >
                             Delete
@@ -130,6 +131,7 @@ export default function TaskModal({ task, onClose, onSave, onDelete, mode = "edi
 
                     <button
                         className="btn-primary"
+                        data-testid="submit-task"
                         onClick={() =>
                             onSave({
                                 title,
